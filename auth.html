@@ -6,7 +6,7 @@
     <title>Authentification - Serveur entre amis</title>
     <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
+    <link href="css/auth.css" rel="stylesheet">
     <style>
         #video-background {
             position: fixed;
@@ -168,7 +168,7 @@
                         <div class="tab-content">
                             <!-- Formulaire de connexion -->
                             <div class="tab-pane fade show active" id="login" role="tabpanel">
-                                <form id="loginForm" onsubmit="handleLogin(event)" action="javascript:void(0);">
+                                <form id="loginForm" onsubmit="return handleLogin(event)">
                                     <div class="mb-4">
                                         <label for="username" class="form-label">Nom d'utilisateur</label>
                                         <input type="text" class="form-control" id="username" required>
@@ -185,7 +185,7 @@
 
                             <!-- Formulaire d'inscription -->
                             <div class="tab-pane fade" id="register" role="tabpanel">
-                                <form id="registerForm" onsubmit="handleRegister(event)" action="javascript:void(0);">
+                                <form id="registerForm" onsubmit="return handleRegister(event)">
                                     <div class="mb-4">
                                         <label for="reg-username" class="form-label">Nom d'utilisateur</label>
                                         <input type="text" class="form-control" id="reg-username" required>
@@ -223,7 +223,6 @@
             const password = document.getElementById('password').value;
 
             try {
-                console.log('Tentative de connexion pour:', username);
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: {
@@ -232,21 +231,20 @@
                     body: JSON.stringify({ username, password })
                 });
 
-                console.log('Statut de la réponse:', response.status);
                 const data = await response.json();
-                console.log('Réponse du serveur:', data);
+                console.log('Login response:', data);
 
                 if (response.ok) {
-                    alert('Connexion réussie !');
-                    localStorage.setItem('authenticated', 'true');
+                    // Utiliser token au lieu de authenticated
+                    localStorage.setItem('token', data.token || 'dummy-token');
                     localStorage.setItem('username', username);
-                    window.location.href = 'index.html';
+                    window.location.replace('/index.html');
                 } else {
-                    alert(data.message || 'Erreur de connexion. Vérifiez vos identifiants.');
+                    alert(data.message || 'Erreur lors de la connexion');
                 }
             } catch (error) {
-                console.error('Erreur lors de la connexion:', error);
-                alert('Erreur de connexion : ' + (error.message || 'Erreur inconnue'));
+                console.error('Erreur:', error);
+                alert('Erreur lors de la connexion');
             }
         }
 
@@ -264,7 +262,6 @@
             }
 
             try {
-                console.log('Tentative d\'inscription pour:', username);
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
@@ -273,26 +270,25 @@
                     body: JSON.stringify({ username, email, password })
                 });
 
-                console.log('Statut de la réponse:', response.status);
                 const data = await response.json();
-                console.log('Réponse du serveur:', data);
+                console.log('Register response:', data);
 
                 if (response.ok) {
                     alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
-                    // Basculer vers l'onglet de connexion
-                    document.getElementById('login-tab').click();
+                    document.querySelector('[data-bs-target="#login"]').click();
                 } else {
                     alert(data.message || 'Erreur lors de l\'inscription');
                 }
             } catch (error) {
-                console.error('Erreur lors de l\'inscription:', error);
-                alert('Erreur d\'inscription : ' + (error.message || 'Erreur inconnue'));
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'inscription');
             }
         }
 
         // Vérifier si l'utilisateur est déjà connecté
-        if (localStorage.getItem('authenticated') === 'true') {
-            window.location.href = 'index.html';
+        const token = localStorage.getItem('token');
+        if (token) {
+            window.location.replace('/index.html');
         }
     </script>
 </body>
