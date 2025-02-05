@@ -223,6 +223,7 @@
             const password = document.getElementById('password').value;
 
             try {
+                console.log('Tentative de connexion pour:', username);
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: {
@@ -231,19 +232,21 @@
                     body: JSON.stringify({ username, password })
                 });
 
+                console.log('Statut de la réponse:', response.status);
                 const data = await response.json();
-                console.log('Login response:', data); // Debug
+                console.log('Réponse du serveur:', data);
 
                 if (response.ok) {
+                    alert('Connexion réussie !');
                     localStorage.setItem('authenticated', 'true');
                     localStorage.setItem('username', username);
                     window.location.href = 'index.html';
                 } else {
-                    alert(data.message || 'Erreur lors de la connexion');
+                    alert(data.message || 'Erreur de connexion. Vérifiez vos identifiants.');
                 }
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la connexion');
+                console.error('Erreur lors de la connexion:', error);
+                alert('Erreur de connexion : ' + (error.message || 'Erreur inconnue'));
             }
         }
 
@@ -261,6 +264,7 @@
             }
 
             try {
+                console.log('Tentative d\'inscription pour:', username);
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
@@ -269,19 +273,20 @@
                     body: JSON.stringify({ username, email, password })
                 });
 
+                console.log('Statut de la réponse:', response.status);
                 const data = await response.json();
-                console.log('Register response:', data); // Debug
+                console.log('Réponse du serveur:', data);
 
                 if (response.ok) {
                     alert('Inscription réussie ! Vous pouvez maintenant vous connecter.');
                     // Basculer vers l'onglet de connexion
-                    document.querySelector('[data-bs-target="#login"]').click();
+                    document.getElementById('login-tab').click();
                 } else {
                     alert(data.message || 'Erreur lors de l\'inscription');
                 }
             } catch (error) {
-                console.error('Erreur:', error);
-                alert('Erreur lors de l\'inscription');
+                console.error('Erreur lors de l\'inscription:', error);
+                alert('Erreur d\'inscription : ' + (error.message || 'Erreur inconnue'));
             }
         }
 
