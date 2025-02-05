@@ -238,27 +238,19 @@
             }
         }
 
-        // Fonction pour vérifier l'authentification
-        async function checkAuth() {
-            try {
-                const token = localStorage.getItem('token');
-                if (!token) {
-                    window.location.href = '/auth.html';
-                    return;
-                }
-                
-                const username = localStorage.getItem('username');
-                if (username) {
-                    document.getElementById('username').textContent = username;
-                }
-            } catch (error) {
-                console.error('Erreur lors de la vérification de l\'authentification:', error);
+        // Vérification unique de l'authentification au chargement
+        window.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            if (!token) {
                 window.location.href = '/auth.html';
+                return;
             }
-        }
-
-        // Vérifier l'authentification au chargement
-        checkAuth();
+            
+            const username = localStorage.getItem('username');
+            if (username) {
+                document.getElementById('username').textContent = username;
+            }
+        });
     </script>
 
     <!-- Modal Archives -->
