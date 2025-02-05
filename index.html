@@ -108,6 +108,21 @@
             transform: translateY(-2px);
         }
 
+        /* Style pour le carré rouge beta */
+        .beta-warning {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            background-color: #ff0000;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+            font-family: 'Special Elite', sans-serif;
+        }
+
         .status-bar {
             background-color: var(--military-gray);
             color: var(--military-beige);
@@ -135,6 +150,12 @@
     <script src="/auth-check.js"></script>
 </head>
 <body>
+    <!-- Avertissement Beta -->
+    <div class="beta-warning">
+        <strong>VERSION BETA</strong><br>
+        Le support technique est temporairement indisponible. Les demandes de serveurs restent pleinement fonctionnelles.
+    </div>
+
     <!-- Navigation Header -->
     <div class="header-nav">
         <div class="container">
@@ -143,7 +164,7 @@
                     Opérateur: <span id="username"></span>
                 </div>
                 <div>
-                    <button class="nav-button" onclick="logout()">Évacuation</button>
+                    <button class="nav-button" onclick="evacuation()">Évacuation</button>
                 </div>
             </div>
         </div>
@@ -210,32 +231,74 @@
         // Afficher le nom d'utilisateur
         document.getElementById('username').textContent = localStorage.getItem('username') || 'Inconnu';
 
+        // Fonction d'évacuation
+        function evacuation() {
+            if (confirm("Êtes-vous sûr de vouloir évacuer le site ?")) {
+                window.location.href = "https://www.google.com";
+            }
+        }
+
         // Fonction pour vérifier l'authentification
         async function checkAuth() {
             try {
-                const response = await fetch('/api/check-auth');
-                const data = await response.json();
-                if (!data.authenticated) {
+                const token = localStorage.getItem('token');
+                if (!token) {
                     window.location.href = '/auth.html';
+                    return;
+                }
+                
+                const username = localStorage.getItem('username');
+                if (username) {
+                    document.getElementById('username').textContent = username;
                 }
             } catch (error) {
-                console.error('Erreur:', error);
+                console.error('Erreur lors de la vérification de l\'authentification:', error);
                 window.location.href = '/auth.html';
             }
         }
 
-        // Fonction de déconnexion
-        async function logout() {
-            try {
-                const response = await fetch('/api/logout');
-                const data = await response.json();
-                if (data.success) {
-                    window.location.href = '/auth.html';
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-            }
-        }
+        // Vérifier l'authentification au chargement
+        checkAuth();
     </script>
+
+    <!-- Modal Archives -->
+    <div class="modal fade" id="archivesModal" tabindex="-1" aria-labelledby="archivesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="archivesModalLabel">Archives des versions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul>
+                        <li>Version 3.0 (05/02/2024)
+                            <ul>
+                                <li>Amélioration de la sécurité avec HTTPS</li>
+                                <li>Mise à jour du système d'authentification</li>
+                                <li>Correction des problèmes de CSP</li>
+                                <li>Optimisation des performances</li>
+                            </ul>
+                        </li>
+                        <li>Version 2.0
+                            <ul>
+                                <li>Refonte complète de l'interface</li>
+                                <li>Ajout du système de demande de serveur</li>
+                                <li>Amélioration de la stabilité</li>
+                            </ul>
+                        </li>
+                        <li>Version 1.0
+                            <ul>
+                                <li>Version initiale</li>
+                                <li>Fonctionnalités de base</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
