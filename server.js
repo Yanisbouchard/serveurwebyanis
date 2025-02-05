@@ -130,23 +130,28 @@ async function writeUsers(users) {
 
 // Route d'inscription
 app.post('/api/register', async (req, res) => {
+    console.log('Requête d\'inscription reçue:', req.body);
     try {
         const { username, email, password } = req.body;
 
         // Validation des données
         if (!username || !email || !password) {
+            console.log('Données manquantes:', { username: !!username, email: !!email, password: !!password });
             return res.status(400).json({ message: 'Tous les champs sont requis' });
         }
 
         // Lecture des utilisateurs existants
         const users = await readUsers();
+        console.log('Nombre d\'utilisateurs existants:', users.length);
 
         // Vérification si l'utilisateur existe déjà
         if (users.some(user => user.username === username)) {
+            console.log('Nom d\'utilisateur déjà pris:', username);
             return res.status(400).json({ message: 'Ce nom d\'utilisateur est déjà pris' });
         }
 
         if (users.some(user => user.email === email)) {
+            console.log('Email déjà utilisé:', email);
             return res.status(400).json({ message: 'Cet email est déjà utilisé' });
         }
 
@@ -162,6 +167,7 @@ app.post('/api/register', async (req, res) => {
 
         // Sauvegarde des utilisateurs
         await writeUsers(users);
+        console.log('Nouvel utilisateur enregistré:', username);
 
         res.status(201).json({ message: 'Inscription réussie' });
     } catch (error) {
@@ -172,31 +178,38 @@ app.post('/api/register', async (req, res) => {
 
 // Route de connexion
 app.post('/api/login', async (req, res) => {
+    console.log('Requête de connexion reçue:', { username: req.body.username });
     try {
         const { username, password } = req.body;
 
         // Validation des données
         if (!username || !password) {
+            console.log('Données manquantes:', { username: !!username, password: !!password });
             return res.status(400).json({ message: 'Tous les champs sont requis' });
         }
 
         // Lecture des utilisateurs
         const users = await readUsers();
+        console.log('Nombre d\'utilisateurs trouvés:', users.length);
 
         // Recherche de l'utilisateur
         const user = users.find(u => u.username === username);
 
         if (!user) {
+            console.log('Utilisateur non trouvé:', username);
             return res.status(401).json({ message: 'Identifiants incorrects' });
         }
 
         // Vérification du mot de passe
         const validPassword = await bcrypt.compare(password, user.password);
+        console.log('Résultat de la vérification du mot de passe:', validPassword);
 
         if (!validPassword) {
+            console.log('Mot de passe incorrect pour:', username);
             return res.status(401).json({ message: 'Identifiants incorrects' });
         }
 
+        console.log('Connexion réussie pour:', username);
         res.json({ message: 'Connexion réussie' });
     } catch (error) {
         console.error('Erreur lors de la connexion:', error);
