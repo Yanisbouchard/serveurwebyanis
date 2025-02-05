@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demande de Serveur - QG des Opérations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/custom.css" rel="stylesheet">
+    <style>
+        #video-background {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            object-fit: cover;
+            filter: brightness(0.5) contrast(1.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: transparent;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--military-beige);
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                rgba(0, 0, 0, 0.6),
+                rgba(0, 0, 0, 0.4)
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .request-form {
+            background-color: rgba(60, 65, 66, 0.95);
+            border: 2px solid var(--military-brown);
+            padding: 2rem;
+            margin: 2rem auto;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-header {
+            background-color: var(--military-gray);
+            color: var(--military-beige);
+            padding: 1rem;
+            margin: -2rem -2rem 2rem -2rem;
+            border-bottom: 2px solid var(--military-brown);
+            text-align: center;
+        }
+
+        .form-title {
+            font-family: 'Special Elite', 'Stencil Std', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        .form-label {
+            color: var(--military-beige);
+            font-family: 'Special Elite', sans-serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            background-color: rgba(212, 197, 169, 0.1);
+            border: 1px solid var(--military-brown);
+            color: var(--military-beige);
+        }
+
+        .form-control:focus {
+            background-color: rgba(212, 197, 169, 0.2);
+            border-color: var(--military-green);
+            color: var(--military-beige);
+            box-shadow: 0 0 0 0.25rem rgba(74, 93, 35, 0.25);
+        }
+
+        .game-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-option {
+            flex: 0 0 calc(33.333% - 1rem);
+            text-align: center;
+            padding: 1rem;
+            border: 1px solid var(--military-brown);
+            background-color: rgba(212, 197, 169, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .game-option:hover {
+            background-color: rgba(212, 197, 169, 0.2);
+        }
+
+        .game-option.selected {
+            background-color: var(--military-green);
+            border-color: var(--military-beige);
+        }
+
+        .game-option img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 0.5rem;
+        }
+
+        .submit-btn {
+            background-color: var(--military-green);
+            border: 2px solid var(--military-brown);
+            color: var(--military-beige);
+            font-family: 'Special Elite', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--military-brown);
+            border-color: var(--military-green);
+            transform: translateY(-2px);
+        }
+
+        .nav-button {
+            background-color: var(--military-gray);
+            color: var(--military-beige);
+            border: 2px solid var(--military-brown);
+            padding: 0.5rem 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: 'Special Elite', sans-serif;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .nav-button:hover {
+            background-color: var(--military-brown);
+            color: var(--military-beige);
+        }
+
+        .header-nav {
+            background-color: rgba(60, 65, 66, 0.95);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--military-brown);
+        }
+    </style>
+    <script src="../auth-check.js"></script>
+</head>
+<body>
+    <!-- Vidéo en arrière-plan -->
+    <video id="video-background" autoplay muted loop playsinline>
+        <source src="videos/animated_background.mp4" type="video/mp4">
+        Votre navigateur ne supporte pas la lecture de vidéos.
+    </video>
+
+    <!-- Navigation -->
+    <div class="header-nav">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="../index.html" class="nav-button">← Retour au QG</a>
+                <button class="nav-button" onclick="logout()">Évacuation</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="request-form">
+                    <div class="form-header">
+                        <h1 class="form-title">Demande de Déploiement de Serveur</h1>
+                    </div>
+                    <form id="serverRequestForm" onsubmit="return handleSubmit(event)">
+                        <!-- Informations de contact -->
+                        <div class="mb-4">
+                            <label for="discord" class="form-label">Code d'identification Discord *</label>
+                            <input type="text" class="form-control" id="discord" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="email" class="form-label">Canal de communication (Email) *</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+
+                        <!-- Sélection du jeu -->
+                        <div class="mb-4">
+                            <label class="form-label">Sélection de la mission (Jeu) *</label>
+                            <div class="game-options">
+                                <div class="game-option" onclick="selectGame('gmod')">
+                                    <img src="images/garrys_mod_logo.png" alt="Garry's Mod">
+                                    <div>Garry's Mod</div>
+                                </div>
+                                <div class="game-option" onclick="selectGame('dayz')">
+                                    <img src="images/dayz_logo.png" alt="DayZ">
+                                    <div>DayZ</div>
+                                </div>
+                                <div class="game-option" onclick="selectGame('ro2')">
+                                    <img src="images/red_orchestra_logo.png" alt="Red Orchestra 2">
+                                    <div>Red Orchestra 2</div>
+                                </div>
+                                <div class="game-option" onclick="selectGame('arma3')">
+                                    <img src="images/arma3_logo.png" alt="Arma 3">
+                                    <div>Arma 3</div>
+                                </div>
+                                <div class="game-option" onclick="selectGame('minecraft')">
+                                    <img src="images/minecraft_logo.png" alt="Minecraft">
+                                    <div>Minecraft</div>
+                                </div>
+                                <div class="game-option" onclick="selectGame('l4d')">
+                                    <img src="images/left4dead2_logo.png" alt="Left 4 Dead">
+                                    <div>Left 4 Dead</div>
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedGame" required>
+                        </div>
+
+                        <!-- Spécifications techniques -->
+                        <div class="mb-4">
+                            <label for="specs" class="form-label">Spécifications techniques (Optionnel)</label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control mb-2" id="ram" placeholder="RAM (en GB)">
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="number" class="form-control mb-2" id="cpu" placeholder="Nombre de cœurs CPU">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="players" class="form-label">Capacité des troupes (Nombre de joueurs) (Optionnel)</label>
+                            <input type="number" class="form-control" id="players">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="needs" class="form-label">Besoins spécifiques supplémentaires (Optionnel)</label>
+                            <textarea class="form-control" id="needs" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="deadline" class="form-label">Date de déploiement souhaitée *</label>
+                            <input type="date" class="form-control" id="deadline" required>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="submit-btn">Soumettre la demande</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sélection du jeu
+        function selectGame(game) {
+            document.querySelectorAll('.game-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+            document.getElementById('selectedGame').value = game;
+        }
+
+        // Soumission du formulaire
+        async function handleSubmit(event) {
+            event.preventDefault();
+
+            const formData = {
+                discord: document.getElementById('discord').value,
+                email: document.getElementById('email').value,
+                game: document.getElementById('selectedGame').value,
+                ram: document.getElementById('ram').value,
+                cpu: document.getElementById('cpu').value,
+                players: document.getElementById('players').value,
+                needs: document.getElementById('needs').value,
+                deadline: document.getElementById('deadline').value
+            };
+
+            try {
+                const response = await fetch('/demandeserveur/submit-server-request', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert('Votre demande de serveur a été enregistrée avec succès. Un ticket GLPI a été créé.');
+                    window.location.href = '../index.html';
+                } else {
+                    alert(data.message || 'Une erreur est survenue lors de l\'envoi de la demande.');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue lors de l\'envoi de la demande.');
+            }
+        }
+
+        // Vérification de la date minimale
+        document.getElementById('deadline').min = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>

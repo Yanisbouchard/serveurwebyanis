@@ -1,0 +1,27 @@
+[
+  {
+    "username": "test",
+    "email": "yaniscraft52@gmail.com",
+    "password": "$2a$10$cBmsoCUaKTot2fYLSOaVXO1q/qnzHcME504ozfocSQJEBvLqRdmSW"
+  },
+  {
+    "username": "test",
+    "email": "yaniscraft52@gmail.com",
+    "password": "$2a$10$WW1uisZTmColo8dCXdIid.16W9YUZ0kl47nB8ej8xtVUjtbtaWMVa"
+  },
+  {
+    "username": "test123",
+    "email": "yanis52@gmail.com",
+    "password": "$2a$10$4NEa8ejes.6AEraKZA6ssOxy9Lf.vQ.M/H4vWDSZfpyZn8cw0Cboe"
+  },
+  {
+    "username": "yanis",
+    "email": "christopheetceline.ratte@orange.fr",
+    "password": "$2a$10$BWv/oCuCrsZwwUJXb.mNSulgw/RJEk3A.aLJRkaHL/nlGja3BwEMi"
+  },
+  {
+    "username": "Cadet",
+    "email": "test@test52.fr",
+    "password": "$2a$10$awVD4hAf4CJqafeS/LjLc.35C95v9miFcJR1TgT89rLnBKR.9x/xa"
+  }
+]

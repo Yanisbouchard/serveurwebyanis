@@ -1,0 +1,159 @@
+/* Variables */
+:root {
+    --military-green: #4a5d23;
+    --military-brown: #8b7355;
+    --military-gray: #3c4142;
+    --military-beige: #d4c5a9;
+    --military-red: #8b2323;
+    --military-blue: #23238b;
+}
+
+body {
+    background-image: url('../ww2_background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+
+/* Card style */
+.card {
+    background-color: rgba(212, 197, 169, 0.95);
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    border-radius: 0;
+    border: 2px solid var(--military-brown);
+}
+
+.card-header {
+    background-color: var(--military-gray) !important;
+    border-bottom: 2px solid var(--military-brown);
+    color: var(--military-beige) !important;
+    font-family: 'Special Elite', 'Stencil Std', sans-serif;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* Form controls */
+.form-control, .form-select {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--military-brown);
+    border-radius: 0;
+    padding: 10px;
+    font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--military-green);
+    box-shadow: 0 0 0 0.2rem rgba(74, 93, 35, 0.25);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--military-green);
+    border-color: var(--military-brown);
+    color: var(--military-beige);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 0;
+    padding: 10px 20px;
+    font-family: 'Special Elite', 'Stencil Std', sans-serif;
+}
+
+.btn-primary:hover {
+    background-color: var(--military-brown);
+    border-color: var(--military-green);
+}
+
+.btn-light {
+    background-color: var(--military-beige);
+    border-color: var(--military-brown);
+    color: var(--military-gray);
+    border-radius: 0;
+}
+
+/* Preview section */
+.form-preview {
+    background-color: rgba(60, 65, 66, 0.9);
+    border: 2px solid var(--military-brown);
+    color: var(--military-beige);
+    padding: 20px;
+    margin-top: 20px;
+    font-family: 'Special Elite', 'Courier New', Courier, monospace;
+}
+
+.preview-label {
+    color: var(--military-beige);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.toast {
+    background-color: rgba(212, 197, 169, 0.95);
+    border: 2px solid var(--military-brown);
+    border-radius: 0;
+    padding: 15px 25px;
+    margin-bottom: 10px;
+    font-family: 'Special Elite', 'Courier New', Courier, monospace;
+    color: var(--military-gray);
+}
+
+.toast.success {
+    border-left: 4px solid var(--military-green);
+}
+
+.toast.error {
+    border-left: 4px solid var(--military-red);
+}
+
+/* Loading spinner */
+.spinner-overlay {
+    background: rgba(60, 65, 66, 0.8);
+}
+
+.spinner {
+    border: 5px solid var(--military-beige);
+    border-top: 5px solid var(--military-green);
+}
+
+/* Labels */
+label {
+    color: var(--military-gray);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+    --military-beige: #2d2d2d;
+    --military-gray: #1a1a1a;
+}
+
+[data-theme="dark"] .card {
+    background-color: rgba(45, 45, 45, 0.95);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: rgba(26, 26, 26, 0.9);
+    color: var(--military-beige);
+}
+
+/* Theme toggle button */
+.theme-toggle {
+    background-color: var(--military-beige);
+    border: 2px solid var(--military-brown);
+    color: var(--military-gray);
+    border-radius: 0;
+}
