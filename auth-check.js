@@ -1,21 +1,30 @@
-// Vérifie si l'utilisateur est authentifié
+// Fonction pour vérifier l'authentification
 function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
-        window.location.href = '/auth.html';
-        return;
+        window.location.replace('/auth.html');
+        return false;
     }
+    return true;
 }
-
-// Vérifie l'authentification au chargement de la page
-// document.addEventListener('DOMContentLoaded', checkAuth);
 
 // Fonction de déconnexion
 function logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
-    window.location.href = '/auth.html';
+    window.location.replace('/auth.html');
 }
 
-// Ne pas vérifier automatiquement au chargement de la page
-// car index.html a déjà sa propre vérification
+// Mise à jour du nom d'utilisateur
+function updateUsername() {
+    const username = localStorage.getItem('username');
+    const usernameElement = document.getElementById('username');
+    if (username && usernameElement) {
+        usernameElement.textContent = username;
+    }
+}
+
+// Vérification initiale
+if (checkAuth()) {
+    updateUsername();
+}
